@@ -12,9 +12,10 @@ interface ResultsViewProps {
   transactions: CategorizedTransaction[];
   onReset: () => void;
   onUpdateTransaction: (transaction: CategorizedTransaction) => void;
+  walletBalance?: { balance: number; currency: string } | null;
 }
 
-export function ResultsView({ transactions, onReset, onUpdateTransaction }: ResultsViewProps) {
+export function ResultsView({ transactions, onReset, onUpdateTransaction, walletBalance }: ResultsViewProps) {
   
   const handleExportJson = () => {
     const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
@@ -50,6 +51,19 @@ export function ResultsView({ transactions, onReset, onUpdateTransaction }: Resu
           </Button>
         </div>
       </header>
+
+      {walletBalance && (
+        <div className="print:hidden">
+          <div className="calico-card p-6">
+            <h3 className="text-lg font-semibold mb-4">Current Wallet Balance</h3>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl font-bold text-primary">
+                {walletBalance.balance.toFixed(6)} {walletBalance.currency}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="print:hidden">
         <IncomeSummary transactions={transactions} />

@@ -31,6 +31,15 @@ const JupIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+const SolIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" fill="#14F195"/>
+        <path d="M7.5 7.5h9v9h-9z" fill="white"/>
+        <path d="M8.5 8.5h7v7h-7z" fill="#14F195"/>
+        <path d="M9.5 9.5h5v5h-5z" fill="white"/>
+    </svg>
+);
+
 const genericCryptoProps = {
     className: "h-6 w-6"
 };
@@ -40,6 +49,7 @@ const currencyToIcon: Record<string, React.ComponentType<React.SVGProps<SVGSVGEl
     ETH: (props) => <EthIcon {...genericCryptoProps} {...props} />,
     USDC: (props) => <UsdcIcon {...genericCryptoProps} {...props} />,
     JUP: (props) => <JupIcon {...genericCryptoProps} {...props} />,
+    SOL: (props) => <SolIcon {...genericCryptoProps} {...props} />,
     USD: (props) => <DollarSign {...genericCryptoProps} {...props} />,
 };
 

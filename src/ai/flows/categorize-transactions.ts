@@ -66,6 +66,8 @@ const prompt = ai.definePrompt({
 
   For each transaction, consider the description and the amount to determine the most appropriate category and type (inflow or outflow).
 
+  Please categorize each transaction and return the results in the exact format specified by the schema.
+
   Transactions:
   {{#each transactions}}
   - Date: {{date}}, Description: {{description}}, Amount: {{amount}} {{currency}}
@@ -79,7 +81,19 @@ const categorizeTransactionsFlow = ai.defineFlow(
     outputSchema: CategorizeTransactionsOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    try {
+      console.log('AI Flow: Processing', input.transactions.length, 'transactions');
+      const {output} = await prompt(input);
+      
+      if (!output) {
+        throw new Error('AI returned no output');
+      }
+      
+      console.log('AI Flow: Successfully categorized transactions');
+      return output;
+    } catch (error) {
+      console.error('AI Flow Error:', error);
+      throw error;
+    }
   }
 );

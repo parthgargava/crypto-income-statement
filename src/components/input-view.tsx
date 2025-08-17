@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,12 +8,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, Wallet, ArrowRight } from "lucide-react";
 import { CryptoIcon } from "./icons/crypto-icons";
 import { Logo } from "./logo";
+import { detectCryptoType } from "@/lib/utils";
 
 interface InputViewProps {
-  onProcess: () => void;
+  onProcess: (walletAddress: string, cryptoType: string) => void;
 }
 
 export function InputView({ onProcess }: InputViewProps) {
+  const [walletAddress, setWalletAddress] = useState("");
+  const [detectedCrypto, setDetectedCrypto] = useState<string | null>(null);
+
+  const handleWalletAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const address = e.target.value;
+    setWalletAddress(address);
+    
+    if (address.trim()) {
+      const cryptoType = detectCryptoType(address);
+      setDetectedCrypto(cryptoType);
+    } else {
+      setDetectedCrypto(null);
+    }
+  };
+
   return (
     <div className="calico-container">
         <div className="text-center mb-8 calico-fade-in">
@@ -45,7 +62,7 @@ export function InputView({ onProcess }: InputViewProps) {
                               <p className="font-semibold text-lg text-foreground">Drag & drop your PDF/CSV file here</p>
                               <p className="text-sm text-muted-foreground mt-1">or</p>
                             </div>
-                            <Button className="calico-button" onClick={onProcess}>
+                            <Button className="calico-button" onClick={() => onProcess("", "")}>
                               Browse Files
                               <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
@@ -63,15 +80,41 @@ export function InputView({ onProcess }: InputViewProps) {
                                       id="wallet-address" 
                                       type="text" 
                                       placeholder="0x... or btc..."
+                                      value={walletAddress}
+                                      onChange={handleWalletAddressChange}
                                       className="bg-background border-border focus:border-primary"
                                     />
-                                    <div className="absolute inset-y-0 right-3 flex items-center gap-2">
-                                        <CryptoIcon currency="BTC" className="h-5 w-5 animate-spin [animation-duration:5s]" />
-                                        <CryptoIcon currency="ETH" className="h-5 w-5 animate-spin [animation-duration:3s]" />
+                                    <div className="absolute inset-y-0 right-3 flex items-center">
+                                        {detectedCrypto ? (
+                                            <span className="text-sm font-semibold text-primary animate-pulse">
+                                                {detectedCrypto}
+                                            </span>
+                                        ) : walletAddress.trim() ? (
+                                            <span className="text-sm text-muted-foreground animate-pulse">
+                                                ...
+                                            </span>
+                                        ) : (
+                                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                                <span>BTC</span>
+                                                <span>•</span>
+                                                <span>ETH</span>
+                                                <span>•</span>
+                                                <span>SOL</span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
+                                {detectedCrypto && (
+                                    <p className="text-sm text-muted-foreground mt-2">
+                                        Detected: {detectedCrypto} wallet
+                                    </p>
+                                )}
                              </div>
-                            <Button className="calico-button w-full" onClick={onProcess}>
+                            <Button 
+                                className="calico-button w-full" 
+                                onClick={() => onProcess(walletAddress, detectedCrypto || "")}
+                                disabled={!walletAddress.trim() || !detectedCrypto}
+                            >
                                 Fetch Transactions
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
