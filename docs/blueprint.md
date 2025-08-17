@@ -1,4 +1,4 @@
-# **App Name**: CryptoProof
+# **App Name**: Calico Crypto Statement
 
 ## Core Features:
 

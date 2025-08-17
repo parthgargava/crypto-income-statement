@@ -39,32 +39,32 @@ export function TransactionTable({ transactions, onUpdateTransaction }: Transact
   };
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="calico-card overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+          <TableRow className="border-border hover:bg-muted/50">
+            <TableHead className="text-foreground font-semibold">Date</TableHead>
+            <TableHead className="text-foreground font-semibold">Description</TableHead>
+            <TableHead className="text-foreground font-semibold">Category</TableHead>
+            <TableHead className="text-right text-foreground font-semibold">Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {transactions.map((t, index) => (
-            <TableRow key={`${t.date}-${t.description}-${index}`}>
-              <TableCell className="font-medium whitespace-nowrap">{new Date(t.date).toLocaleDateString()}</TableCell>
-              <TableCell>{t.description}</TableCell>
+            <TableRow key={`${t.date}-${t.description}-${index}`} className="border-border hover:bg-muted/30">
+              <TableCell className="font-medium whitespace-nowrap text-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
+              <TableCell className="text-foreground">{t.description}</TableCell>
               <TableCell>
                 <Select
                   value={t.category}
                   onValueChange={(value) => handleCategoryChange(t, value as TransactionCategory)}
                 >
-                  <SelectTrigger className="w-[180px] h-8 text-xs print:border-none print:w-auto print:h-auto print:p-0">
+                  <SelectTrigger className="w-[180px] h-8 text-xs print:border-none print:w-auto print:h-auto print:p-0 bg-background border-border">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-card border-border">
                     {ALL_CATEGORIES.map(cat => (
-                      <SelectItem key={cat} value={cat} className="text-xs">{cat}</SelectItem>
+                      <SelectItem key={cat} value={cat} className="text-xs text-foreground">{cat}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -73,12 +73,13 @@ export function TransactionTable({ transactions, onUpdateTransaction }: Transact
                 <div className="flex items-center justify-end gap-2">
                     <span className={cn(
                         "font-mono font-semibold",
-                        t.type === 'inflow' ? 'text-green-600' : 'text-red-600'
+                        t.type === 'inflow' ? 'text-primary' : 'text-destructive'
                     )}>
                         {t.type === 'inflow' ? '+' : ''}{formatCurrency(t.amount)}
                     </span>
                     <Badge variant={t.type === 'inflow' ? 'default' : 'destructive'} 
-                        className={cn("w-16 justify-center print:hidden", t.type === 'inflow' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')}>
+                        className={cn("w-16 justify-center print:hidden", 
+                          t.type === 'inflow' ? 'bg-primary/20 text-primary border-primary/30' : 'bg-destructive/20 text-destructive border-destructive/30')}>
                         {t.type}
                     </Badge>
                      <CryptoIcon currency={t.currency} className="h-5 w-5" />

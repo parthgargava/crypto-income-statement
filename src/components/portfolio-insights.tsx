@@ -5,7 +5,7 @@ import { Bar, BarChart, CartesianGrid, Pie, PieChart, ResponsiveContainer, Toolt
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { TrendingUp, ShieldAlert } from "lucide-react";
+import { TrendingUp, ShieldAlert, PieChart as PieChartIcon, BarChart3 } from "lucide-react";
 import type { CategorizedTransaction } from "@/types";
 
 interface PortfolioInsightsProps {
@@ -53,12 +53,19 @@ export function PortfolioInsights({ transactions }: PortfolioInsightsProps) {
 
   return (
     <div>
-        <h2 className="text-2xl font-bold mb-4">Portfolio Insights</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="lg:col-span-1">
+        <h2 className="calico-heading mb-6">Portfolio Insights</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Card className="calico-card lg:col-span-1">
                 <CardHeader>
-                    <CardTitle>Asset Breakdown</CardTitle>
-                    <CardDescription>Current holdings distribution by asset.</CardDescription>
+                    <div className="flex items-center gap-2">
+                      <div className="calico-gradient p-2 rounded-lg">
+                        <PieChartIcon className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-foreground">Asset Breakdown</CardTitle>
+                        <CardDescription>Current holdings distribution by asset.</CardDescription>
+                      </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[300px]">
@@ -75,32 +82,39 @@ export function PortfolioInsights({ transactions }: PortfolioInsightsProps) {
                 </CardContent>
             </Card>
 
-            <Card className="lg:col-span-2">
+            <Card className="calico-card lg:col-span-2">
                 <CardHeader>
-                    <CardTitle>Monthly Income Trend</CardTitle>
-                    <CardDescription>Inflows over the past several months.</CardDescription>
+                    <div className="flex items-center gap-2">
+                      <div className="calico-gradient p-2 rounded-lg">
+                        <BarChart3 className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-foreground">Monthly Income Trend</CardTitle>
+                        <CardDescription>Inflows over the past several months.</CardDescription>
+                      </div>
+                    </div>
                 </CardHeader>
                 <CardContent className="h-[300px] w-full">
                     <ChartContainer config={monthlyChartConfig} className="h-full w-full">
                         <BarChart data={monthlyIncomeData} accessibilityLayer>
-                            <CartesianGrid vertical={false} />
-                            <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
-                            <YAxis tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => `$${value/1000}k`} />
+                            <CartesianGrid vertical={false} stroke="hsl(var(--border))" />
+                            <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} stroke="hsl(var(--muted-foreground))" />
+                            <YAxis tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => `$${value/1000}k`} stroke="hsl(var(--muted-foreground))" />
                             <Tooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
                             <Bar dataKey="income" fill="var(--color-income)" radius={4} />
                         </BarChart>
                     </ChartContainer>
                 </CardContent>
             </Card>
-            <Card className="lg:col-span-3">
+            <Card className="calico-card lg:col-span-3">
                 <CardHeader>
-                    <CardTitle>AI-Powered Insights</CardTitle>
+                    <CardTitle className="text-foreground">AI-Powered Insights</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <Alert>
-                        <ShieldAlert className="h-4 w-4" />
-                        <AlertTitle>Volatility Analysis</AlertTitle>
-                        <AlertDescription>
+                    <Alert className="border-primary/20 bg-primary/5">
+                        <ShieldAlert className="h-4 w-4 text-primary" />
+                        <AlertTitle className="text-foreground">Volatility Analysis</AlertTitle>
+                        <AlertDescription className="text-muted-foreground">
                             Your primary income sources from Staking (ETH) and Salary (USDC) show low to moderate volatility. Consider diversifying staking rewards beyond a single asset to further stabilize income.
                         </AlertDescription>
                     </Alert>

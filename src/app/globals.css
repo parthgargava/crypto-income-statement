@@ -8,57 +8,57 @@ body {
 
 @layer base {
   :root {
-    --background: 276 47% 95%;
-    --foreground: 278 25% 20%;
+    --background: 270 100% 98%;
+    --foreground: 262 47% 25%;
     --card: 0 0% 100%;
-    --card-foreground: 278 25% 20%;
+    --card-foreground: 262 47% 25%;
     --popover: 0 0% 100%;
-    --popover-foreground: 278 25% 20%;
-    --primary: 278 69% 61%;
-    --primary-foreground: 276 47% 98%;
-    --secondary: 276 30% 90%;
-    --secondary-foreground: 278 25% 20%;
-    --muted: 276 30% 90%;
-    --muted-foreground: 278 15% 50%;
-    --accent: 205 68% 62%;
+    --popover-foreground: 262 47% 25%;
+    --primary: 262 47% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 100% 55%;
+    --secondary-foreground: 262 47% 25%;
+    --muted: 270 20% 95%;
+    --muted-foreground: 262 20% 45%;
+    --accent: 262 47% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 278 20% 85%;
-    --input: 278 20% 90%;
-    --ring: 278 69% 61%;
-    --chart-1: 278 69% 61%;
-    --chart-2: 205 68% 62%;
-    --chart-3: 300 50% 70%;
-    --chart-4: 260 60% 65%;
-    --chart-5: 290 55% 75%;
-    --radius: 0.5rem;
+    --border: 270 20% 90%;
+    --input: 270 20% 90%;
+    --ring: 262 47% 45%;
+    --chart-1: 262 47% 45%;
+    --chart-2: 25 100% 55%;
+    --chart-3: 262 47% 65%;
+    --chart-4: 25 100% 65%;
+    --chart-5: 262 47% 75%;
+    --radius: 0.75rem;
   }
   .dark {
-    --background: 278 15% 10%;
-    --foreground: 276 30% 90%;
-    --card: 278 15% 15%;
-    --card-foreground: 276 30% 90%;
-    --popover: 278 15% 10%;
-    --popover-foreground: 276 30% 90%;
-    --primary: 278 69% 61%;
-    --primary-foreground: 276 47% 98%;
-    --secondary: 278 15% 25%;
-    --secondary-foreground: 276 30% 90%;
-    --muted: 278 15% 25%;
-    --muted-foreground: 278 10% 60%;
-    --accent: 205 68% 62%;
+    --background: 270 100% 98%;
+    --foreground: 262 47% 25%;
+    --card: 0 0% 100%;
+    --card-foreground: 262 47% 25%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 262 47% 25%;
+    --primary: 262 47% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 100% 55%;
+    --secondary-foreground: 262 47% 25%;
+    --muted: 270 20% 95%;
+    --muted-foreground: 262 20% 45%;
+    --accent: 262 47% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 278 15% 25%;
-    --input: 278 15% 25%;
-    --ring: 278 69% 61%;
-    --chart-1: 278 69% 61%;
-    --chart-2: 205 68% 62%;
-    --chart-3: 300 50% 70%;
-    --chart-4: 260 60% 65%;
-    --chart-5: 290 55% 75%;
+    --border: 270 20% 90%;
+    --input: 270 20% 90%;
+    --ring: 262 47% 45%;
+    --chart-1: 262 47% 45%;
+    --chart-2: 25 100% 55%;
+    --chart-3: 262 47% 65%;
+    --chart-4: 25 100% 65%;
+    --chart-5: 262 47% 75%;
   }
 }
 
@@ -68,5 +68,86 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #F5F0FF 0%, #FFF5F0 100%);
+    min-height: 100vh;
+  }
+}
+
+/* Calico-inspired custom styles */
+@layer components {
+  .calico-gradient {
+    background: linear-gradient(135deg, #8B5CF6 0%, #6B46C1 100%);
+  }
+  
+  .calico-card {
+    @apply bg-card border border-border rounded-xl shadow-lg backdrop-blur-sm;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .calico-button {
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl px-6 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105;
+    background: #8B5CF6;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  
+  .calico-button-secondary {
+    @apply bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold rounded-xl px-6 py-3 transition-all duration-300 border border-border;
+    background: #E67E22;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .calico-heading {
+    @apply text-4xl font-bold text-foreground;
+    color: #6B46C1;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .calico-subheading {
+    @apply text-lg text-muted-foreground;
+    color: #E67E22;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .calico-logo {
+    @apply text-2xl font-medium;
+    color: #6B46C1;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .calico-container {
+    @apply flex flex-col items-center justify-center min-h-screen p-10;
+    background: linear-gradient(135deg, #F5F0FF 0%, #FFF5F0 100%);
+  }
+
+  .calico-spacing {
+    @apply space-y-5;
+  }
+
+  .calico-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

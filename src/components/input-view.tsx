@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, Wallet } from "lucide-react";
+import { Upload, Wallet, ArrowRight } from "lucide-react";
 import { CryptoIcon } from "./icons/crypto-icons";
 import { Logo } from "./logo";
 
@@ -14,49 +14,66 @@ interface InputViewProps {
 
 export function InputView({ onProcess }: InputViewProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
-        <Logo />
-        <h2 className="mt-4 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Crypto Income Verification Made Simple
-        </h2>
-        <p className="mt-2 max-w-2xl text-center text-lg text-muted-foreground">
-            Upload your exchange statements or connect a wallet to generate a verifiable income report in minutes.
-        </p>
+    <div className="calico-container">
+        <div className="text-center mb-8 calico-fade-in">
+          <Logo />
+          <h2 className="calico-heading mt-8">
+              Track your crypto in one centralized location
+          </h2>
+          <p className="calico-subheading mt-5 max-w-2xl">
+              Save time and optimize with Calico
+          </p>
+        </div>
         
-        <Card className="mt-8 w-full max-w-2xl shadow-lg">
-            <CardContent className="p-6">
+        <Card className="calico-card w-full max-w-2xl calico-fade-in">
+            <CardContent className="p-8">
                 <Tabs defaultValue="upload" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4"/> Upload Statement</TabsTrigger>
-                        <TabsTrigger value="wallet"><Wallet className="mr-2 h-4 w-4"/> Enter Wallet</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-2 bg-muted p-1 rounded-lg">
+                        <TabsTrigger value="upload" className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground">
+                          <Upload className="mr-2 h-4 w-4"/> Upload Statement
+                        </TabsTrigger>
+                        <TabsTrigger value="wallet" className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground">
+                          <Wallet className="mr-2 h-4 w-4"/> Enter Wallet
+                        </TabsTrigger>
                     </TabsList>
-                    <TabsContent value="upload" className="mt-6">
-                        <div className="flex flex-col items-center justify-center space-y-4 rounded-lg border-2 border-dashed p-10 text-center">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                                <Upload className="h-8 w-8 text-primary" />
+                    <TabsContent value="upload" className="mt-8">
+                        <div className="flex flex-col items-center justify-center space-y-6 rounded-xl border-2 border-dashed border-border p-12 text-center hover:border-primary/50 transition-colors">
+                            <div className="calico-gradient p-4 rounded-full">
+                                <Upload className="h-8 w-8 text-white" />
                             </div>
-                            <p className="font-medium">Drag & drop your PDF/CSV file here</p>
-                            <p className="text-sm text-muted-foreground">or</p>
-                            <Button size="sm" onClick={onProcess}>Browse Files</Button>
-                            <p className="text-xs text-muted-foreground mt-2">Demonstration: Click any button to use mock data.</p>
+                            <div>
+                              <p className="font-semibold text-lg text-foreground">Drag & drop your PDF/CSV file here</p>
+                              <p className="text-sm text-muted-foreground mt-1">or</p>
+                            </div>
+                            <Button className="calico-button" onClick={onProcess}>
+                              Browse Files
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                            <p className="text-xs text-muted-foreground mt-4">Demonstration: Click any button to use mock data.</p>
                         </div>
                     </TabsContent>
-                    <TabsContent value="wallet" className="mt-6">
-                        <div className="space-y-4">
+                    <TabsContent value="wallet" className="mt-8">
+                        <div className="space-y-6">
                              <div>
-                                <label htmlFor="wallet-address" className="block text-sm font-medium text-foreground mb-1">
+                                <label htmlFor="wallet-address" className="block text-sm font-medium text-foreground mb-2">
                                     Public Wallet Address
                                 </label>
                                 <div className="relative">
-                                    <Input id="wallet-address" type="text" placeholder="0x... or btc..."/>
-                                    <div className="absolute inset-y-0 right-2 flex items-center gap-2">
+                                    <Input 
+                                      id="wallet-address" 
+                                      type="text" 
+                                      placeholder="0x... or btc..."
+                                      className="bg-background border-border focus:border-primary"
+                                    />
+                                    <div className="absolute inset-y-0 right-3 flex items-center gap-2">
                                         <CryptoIcon currency="BTC" className="h-5 w-5 animate-spin [animation-duration:5s]" />
                                         <CryptoIcon currency="ETH" className="h-5 w-5 animate-spin [animation-duration:3s]" />
                                     </div>
                                 </div>
                              </div>
-                            <Button className="w-full" onClick={onProcess}>
+                            <Button className="calico-button w-full" onClick={onProcess}>
                                 Fetch Transactions
+                                <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                              <p className="text-xs text-muted-foreground text-center">Demonstration: Click button to use mock data.</p>
                         </div>

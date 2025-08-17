@@ -35,35 +35,43 @@ export function IncomeSummary({ transactions }: IncomeSummaryProps) {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Income Summary</h2>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
-            <ArrowUpRight className="h-4 w-4 text-green-500" />
+      <h2 className="calico-heading mb-6">Income Summary</h2>
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="calico-card">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-sm font-medium text-foreground">Total Income</CardTitle>
+            <div className="calico-gradient p-2 rounded-lg">
+              <ArrowUpRight className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">{formatCurrency(summary.totalInflow)}</div>
+            <div className="text-3xl font-bold text-primary mb-2">{formatCurrency(summary.totalInflow)}</div>
             <p className="text-xs text-muted-foreground">All inflows from rewards, salary, etc.</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Outflows</CardTitle>
-            <ArrowDownLeft className="h-4 w-4 text-red-500" />
+        <Card className="calico-card">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-sm font-medium text-foreground">Total Outflows</CardTitle>
+            <div className="bg-destructive/20 p-2 rounded-lg">
+              <ArrowDownLeft className="h-4 w-4 text-destructive" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">{formatCurrency(summary.totalOutflow)}</div>
+            <div className="text-3xl font-bold text-destructive mb-2">{formatCurrency(summary.totalOutflow)}</div>
             <p className="text-xs text-muted-foreground">All outflows from transfers, payments, etc.</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Net Income</CardTitle>
-            <Scale className="h-4 w-4 text-muted-foreground" />
+        <Card className="calico-card">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-sm font-medium text-foreground">Net Income</CardTitle>
+            <div className="bg-secondary/20 p-2 rounded-lg">
+              <Scale className="h-4 w-4 text-secondary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${summary.netIncome >= 0 ? 'text-foreground' : 'text-red-500'}`}>{formatCurrency(summary.netIncome)}</div>
+            <div className={`text-3xl font-bold mb-2 ${summary.netIncome >= 0 ? 'text-primary' : 'text-destructive'}`}>
+              {formatCurrency(summary.netIncome)}
+            </div>
             <p className="text-xs text-muted-foreground">The difference between income and outflows.</p>
           </CardContent>
         </Card>
