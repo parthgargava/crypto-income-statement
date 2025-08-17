@@ -127,6 +127,17 @@ body {
     letter-spacing: 0.01em;
   }
 
+  .calico-logo-prominent {
+    @apply font-bold;
+    color: #6B46C1;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 4px rgba(107, 70, 193, 0.1);
+    animation: logoGlow 3s ease-in-out infinite alternate;
+  }
+
   .calico-container {
     @apply flex flex-col items-center justify-center min-h-screen p-10;
     background: linear-gradient(135deg, #F5F0FF 0%, #FFF5F0 100%);
@@ -140,10 +151,67 @@ body {
     animation: fadeIn 0.3s ease-in-out;
   }
 
+  .calico-fade-in-delayed {
+    animation: fadeIn 0.6s ease-in-out 0.2s both;
+  }
+
+  .calico-fade-in-delayed-2 {
+    animation: fadeIn 0.6s ease-in-out 0.4s both;
+  }
+
+  .calico-bounce-in {
+    animation: bounceIn 0.8s ease-out;
+  }
+
+  .calico-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .calico-feature-highlight {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+
+  .calico-feature-highlight:hover {
+    color: #6B46C1;
+  }
+
+  .calico-feature-highlight:hover .text-primary {
+    animation: pulse 1s infinite;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
       transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3) translateY(-50px);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05) translateY(0);
+    }
+    70% {
+      transform: scale(0.9) translateY(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
     }
     to {
       opacity: 1;
@@ -163,5 +231,15 @@ body {
 
   .animate-spin-slow {
     animation: spin 8s linear infinite;
+  }
+
+  /* Logo glow animation */
+  @keyframes logoGlow {
+    from {
+      text-shadow: 0 2px 4px rgba(107, 70, 193, 0.1);
+    }
+    to {
+      text-shadow: 0 4px 8px rgba(107, 70, 193, 0.2), 0 0 20px rgba(139, 92, 246, 0.1);
+    }
   }
 }

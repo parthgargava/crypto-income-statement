@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, Wallet, ArrowRight } from "lucide-react";
+import { Upload, Wallet, ArrowRight, FileText, Calculator, TrendingUp } from "lucide-react";
 import { CryptoIcon } from "./icons/crypto-icons";
 import { Logo } from "./logo";
 import { detectCryptoType } from "@/lib/utils";
@@ -38,15 +38,31 @@ export function InputView({ onProcess, onPDFUpload, isUploading, uploadProgress 
     <div className="calico-container">
         <div className="text-center mb-8 calico-fade-in">
           <Logo />
-          <h2 className="calico-heading mt-8">
-              Track your crypto in one centralized location
+          <h2 className="calico-heading mt-8 calico-fade-in-delayed">
+              Get an income statement for your lender
           </h2>
-          <p className="calico-subheading mt-5 max-w-2xl">
-              Save time and optimize with Calico
+          <p className="calico-subheading mt-5 max-w-2xl calico-fade-in-delayed-2">
+              Provide value to your lender and financial planner
           </p>
+          
+          {/* Feature highlights with icons */}
+          <div className="flex justify-center items-center gap-8 mt-8 calico-fade-in-delayed-2">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground calico-feature-highlight cursor-pointer">
+              <FileText className="h-4 w-4 text-primary" />
+              <span>PDF Statements</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground calico-feature-highlight cursor-pointer">
+              <Calculator className="h-4 w-4 text-primary" />
+              <span>Income Analysis</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground calico-feature-highlight cursor-pointer">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <span>Portfolio Insights</span>
+            </div>
+          </div>
         </div>
         
-        <Card className="calico-card w-full max-w-2xl calico-fade-in">
+        <Card className="calico-card w-full max-w-2xl calico-bounce-in">
             <CardContent className="p-8">
                 <Tabs defaultValue="upload" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 bg-muted p-1 rounded-lg">

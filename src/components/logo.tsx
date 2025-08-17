@@ -2,11 +2,11 @@ import { Hexagon } from "lucide-react";
 
 export function Logo() {
   return (
-    <div className="flex items-center gap-3 calico-fade-in">
-      <div className="flex items-center justify-center w-10 h-10">
+    <div className="flex items-center gap-4 calico-fade-in">
+      <div className="flex items-center justify-center w-12 h-12">
         <svg
-          width="40"
-          height="40"
+          width="48"
+          height="48"
           viewBox="0 0 40 40"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +162,7 @@ export function Logo() {
           </defs>
         </svg>
       </div>
-      <h1 className="calico-logo">calico</h1>
+      <h1 className="calico-logo-prominent">calico</h1>
     </div>
   );
 }
