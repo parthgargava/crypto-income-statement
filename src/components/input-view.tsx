@@ -9,12 +9,16 @@ import { Upload, Wallet, ArrowRight } from "lucide-react";
 import { CryptoIcon } from "./icons/crypto-icons";
 import { Logo } from "./logo";
 import { detectCryptoType } from "@/lib/utils";
+import { FileUpload } from "./file-upload";
 
 interface InputViewProps {
   onProcess: (walletAddress: string, cryptoType: string) => void;
+  onPDFUpload: (file: File) => void;
+  isUploading: boolean;
+  uploadProgress: number;
 }
 
-export function InputView({ onProcess }: InputViewProps) {
+export function InputView({ onProcess, onPDFUpload, isUploading, uploadProgress }: InputViewProps) {
   const [walletAddress, setWalletAddress] = useState("");
   const [detectedCrypto, setDetectedCrypto] = useState<string | null>(null);
 
@@ -54,20 +58,12 @@ export function InputView({ onProcess }: InputViewProps) {
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="upload" className="mt-8">
-                        <div className="flex flex-col items-center justify-center space-y-6 rounded-xl border-2 border-dashed border-border p-12 text-center hover:border-primary/50 transition-colors">
-                            <div className="calico-gradient p-4 rounded-full">
-                                <Upload className="h-8 w-8 text-white" />
-                            </div>
-                            <div>
-                              <p className="font-semibold text-lg text-foreground">Drag & drop your PDF/CSV file here</p>
-                              <p className="text-sm text-muted-foreground mt-1">or</p>
-                            </div>
-                            <Button className="calico-button" onClick={() => onProcess("", "")}>
-                              Browse Files
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                            <p className="text-xs text-muted-foreground mt-4">Demonstration: Click any button to use mock data.</p>
-                        </div>
+                        <FileUpload 
+                          onFileUpload={onPDFUpload}
+                          onUploadComplete={() => {}}
+                          isUploading={isUploading}
+                          uploadProgress={uploadProgress}
+                        />
                     </TabsContent>
                     <TabsContent value="wallet" className="mt-8">
                         <div className="space-y-6">

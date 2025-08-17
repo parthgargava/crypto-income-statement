@@ -6,6 +6,8 @@ import type { CategorizedTransaction } from "@/types";
 import { IncomeSummary } from "./income-summary";
 import { TransactionTable } from "./transaction-table";
 import { PortfolioInsights } from "./portfolio-insights";
+import { AssetHoldings } from "./asset-holdings";
+import { AIInsights } from "./ai-insights";
 import { Logo } from "./logo";
 
 interface ResultsViewProps {
@@ -70,7 +72,15 @@ export function ResultsView({ transactions, onReset, onUpdateTransaction, wallet
       </div>
 
       <div className="print:hidden">
+        <AssetHoldings transactions={transactions} />
+      </div>
+
+      <div className="print:hidden">
         <PortfolioInsights transactions={transactions} />
+      </div>
+
+      <div className="print:hidden">
+        <AIInsights transactions={transactions} />
       </div>
 
       <div className="calico-card p-6">

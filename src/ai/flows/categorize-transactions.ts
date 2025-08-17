@@ -49,6 +49,13 @@ export type CategorizeTransactionsOutput = z.infer<
 export async function categorizeTransactions(
   input: CategorizeTransactionsInput
 ): Promise<CategorizeTransactionsOutput> {
+  console.log('AI Input transactions count:', input.transactions.length);
+  console.log('AI Input sample transaction:', input.transactions[0]);
+  console.log('AI Input date range:', {
+    first: input.transactions[0]?.date,
+    last: input.transactions[input.transactions.length - 1]?.date
+  });
+  
   return categorizeTransactionsFlow(input);
 }
 
@@ -56,7 +63,7 @@ const prompt = ai.definePrompt({
   name: 'categorizeTransactionsPrompt',
   input: {schema: CategorizeTransactionsInputSchema},
   output: {schema: CategorizeTransactionsOutputSchema},
-  prompt: `You are an expert in cryptocurrency transactions.
+  prompt: `You are an expert in cryptocurrency transactions and financial analysis.
 
   Your task is to categorize a list of cryptocurrency transactions into inflows and outflows, and assign a specific category to each transaction.
 
@@ -64,13 +71,27 @@ const prompt = ai.definePrompt({
   - inflows: staking rewards, airdrop, salary, trading profit
   - outflows: withdrawal, transfer, payment, trading loss
 
-  For each transaction, consider the description and the amount to determine the most appropriate category and type (inflow or outflow).
+  Categorization rules:
+  1. **staking rewards**: Any staking, mining, or reward transactions (positive amounts)
+  2. **airdrop**: Free token distributions and airdrops
+  3. **salary**: Regular income deposits, salary payments
+  4. **trading profit**: Profitable trades, selling assets for profit
+  5. **withdrawal**: Moving assets out of the exchange/wallet
+  6. **transfer**: Moving assets between accounts (can be positive or negative)
+  7. **payment**: Payments for goods/services
+  8. **trading loss**: Loss-making trades, selling assets at a loss
+
+  For each transaction, consider:
+  - The description text
+  - The amount (positive = inflow, negative = outflow)
+  - The transaction type (buy, sell, deposit, withdrawal, reward, etc.)
+  - The currency involved
 
   Please categorize each transaction and return the results in the exact format specified by the schema.
 
   Transactions:
   {{#each transactions}}
-  - Date: {{date}}, Description: {{description}}, Amount: {{amount}} {{currency}}
+  - Date: {{date}}, Description: {{description}}, Amount: {{amount}} {{currency}}, Type: {{type}}
   {{/each}}`,
 });
 

@@ -3,7 +3,8 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CategorizedTransaction } from "@/types";
-import { ArrowDownLeft, ArrowUpRight, Scale } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Scale, DollarSign } from "lucide-react";
+import { calculateTotalPortfolioValue, calculateAssetHoldings } from "@/lib/market-values";
 
 interface IncomeSummaryProps {
   transactions: CategorizedTransaction[];
@@ -20,6 +21,10 @@ const formatCurrency = (value: number) => {
 
 export function IncomeSummary({ transactions }: IncomeSummaryProps) {
   const summary = useMemo(() => {
+    // Calculate total income as the market value of all assets
+    const totalIncome = calculateTotalPortfolioValue(transactions);
+    
+    // Calculate traditional inflow/outflow for comparison
     const totalInflow = transactions
       .filter((t) => t.type === "inflow")
       .reduce((sum, t) => sum + t.amount, 0);
@@ -30,7 +35,7 @@ export function IncomeSummary({ transactions }: IncomeSummaryProps) {
 
     const netIncome = totalInflow - totalOutflow;
 
-    return { totalInflow, totalOutflow, netIncome };
+    return { totalIncome, totalInflow, totalOutflow, netIncome };
   }, [transactions]);
 
   return (
@@ -41,12 +46,12 @@ export function IncomeSummary({ transactions }: IncomeSummaryProps) {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-sm font-medium text-foreground">Total Income</CardTitle>
             <div className="calico-gradient p-2 rounded-lg">
-              <ArrowUpRight className="h-4 w-4 text-white" />
+              <DollarSign className="h-4 w-4 text-white" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-primary mb-2">{formatCurrency(summary.totalInflow)}</div>
-            <p className="text-xs text-muted-foreground">All inflows from rewards, salary, etc.</p>
+            <div className="text-3xl font-bold text-primary mb-2">{formatCurrency(summary.totalIncome)}</div>
+            <p className="text-xs text-muted-foreground">Market value of all assets</p>
           </CardContent>
         </Card>
         <Card className="calico-card">

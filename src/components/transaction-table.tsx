@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,11 +11,14 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { CategorizedTransaction, TransactionCategory } from "@/types";
 import { ALL_CATEGORIES } from "@/types";
 import { cn } from "@/lib/utils";
 import { CryptoIcon } from "./icons/crypto-icons";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { ChevronLeft, ChevronRight, Search, Filter } from "lucide-react";
 
 
 interface TransactionTableProps {
@@ -32,14 +36,70 @@ const formatCurrency = (value: number) => {
 
 
 export function TransactionTable({ transactions, onUpdateTransaction }: TransactionTableProps) {
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const itemsPerPage = 20;
+
   const handleCategoryChange = (transaction: CategorizedTransaction, newCategory: TransactionCategory) => {
     const newType = ["staking rewards", "airdrop", "salary", "trading profit"].includes(newCategory) ? "inflow" : "outflow";
     onUpdateTransaction({ ...transaction, category: newCategory, type: newType });
   };
 
+  // Filter transactions
+  const filteredTransactions = transactions.filter(transaction => {
+    const matchesSearch = transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         transaction.currency.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === "all" || transaction.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  // Pagination
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTransactions = filteredTransactions.slice(startIndex, endIndex);
+
   return (
     <Card className="calico-card overflow-hidden">
+      {/* Search and Filter Controls */}
+      <div className="p-4 border-b border-border bg-muted/30">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search transactions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-[180px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {ALL_CATEGORIES.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        {/* Results Summary */}
+        <div className="mt-3 text-sm text-muted-foreground">
+          Showing {startIndex + 1}-{Math.min(endIndex, filteredTransactions.length)} of {filteredTransactions.length} transactions
+          {searchTerm && ` matching "${searchTerm}"`}
+          {categoryFilter !== "all" && ` in category "${categoryFilter}"`}
+        </div>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow className="border-border hover:bg-muted/50">
@@ -50,7 +110,7 @@ export function TransactionTable({ transactions, onUpdateTransaction }: Transact
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((t, index) => (
+          {currentTransactions.map((t, index) => (
             <TableRow key={`${t.date}-${t.description}-${index}`} className="border-border hover:bg-muted/30">
               <TableCell className="font-medium whitespace-nowrap text-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
               <TableCell className="text-foreground">{t.description}</TableCell>
@@ -89,6 +149,37 @@ export function TransactionTable({ transactions, onUpdateTransaction }: Transact
           ))}
         </TableBody>
       </Table>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="p-4 border-t border-border bg-muted/30">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Card>
   );
 }

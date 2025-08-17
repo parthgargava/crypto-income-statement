@@ -7,6 +7,7 @@ import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { TrendingUp, ShieldAlert, PieChart as PieChartIcon, BarChart3 } from "lucide-react";
 import type { CategorizedTransaction } from "@/types";
+import { calculateAssetHoldings } from "@/lib/market-values";
 
 interface PortfolioInsightsProps {
   transactions: CategorizedTransaction[];
@@ -16,24 +17,23 @@ const COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3
 
 export function PortfolioInsights({ transactions }: PortfolioInsightsProps) {
   const { assetData, monthlyIncomeData } = useMemo(() => {
-    const assetMap: Record<string, number> = {};
+    // Calculate asset holdings with market values
+    const assetHoldings = calculateAssetHoldings(transactions);
+    
+    // Convert to chart data format
+    const assetData = assetHoldings.map(holding => ({
+      name: holding.currency,
+      value: Math.round(holding.marketValue)
+    }));
+
+    // Monthly income calculation
     const monthlyMap: Record<string, number> = {};
-
     transactions.forEach((t) => {
-      // Asset breakdown (simple sum of amounts, not real-time value)
-      assetMap[t.currency] = (assetMap[t.currency] || 0) + t.amount;
-
-      // Monthly income
       if (t.type === "inflow") {
         const month = new Date(t.date).toLocaleString('default', { month: 'short', year: '2-digit' });
         monthlyMap[month] = (monthlyMap[month] || 0) + t.amount;
       }
     });
-
-    const assetData = Object.entries(assetMap)
-        .filter(([, value]) => value > 0)
-        .map(([name, value]) => ({ name, value: Math.round(value) }))
-        .sort((a, b) => b.value - a.value);
 
     const monthlyIncomeData = Object.entries(monthlyMap)
       .map(([name, income]) => ({ name, income }))
@@ -63,7 +63,7 @@ export function PortfolioInsights({ transactions }: PortfolioInsightsProps) {
                       </div>
                       <div>
                         <CardTitle className="text-foreground">Asset Breakdown</CardTitle>
-                        <CardDescription>Current holdings distribution by asset.</CardDescription>
+                        <CardDescription>Current holdings by market value.</CardDescription>
                       </div>
                     </div>
                 </CardHeader>
